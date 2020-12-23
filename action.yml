@@ -1,6 +1,12 @@
 name: 'Publish Slack notification'
 description: 'Publishes Slack notification on #builds channel using credential passed in SLACK_WEBHOOK_URL env variable'
 
+inputs:
+    extra-message:  # id of input
+        description: 'Extra message'
+        required: false
+        default: ''
+
 runs:
     using: "composite"
     steps:
@@ -21,6 +27,8 @@ runs:
                 username: "GitHub Actions"
                 text: |
                     *<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} | ${{ github.workflow }} #${{ github.run_number }} build on ${{ github.repository }} repository has failed for ${{ steps.process-data.outputs.branch }} branch.>*
+
+                    ${{ inputs.extra-message }}
 
                     _ _ _ _ _ _ _
                 color: "danger"
